@@ -1,0 +1,19 @@
+[project]
+name = "flask-garage"
+version = "0.1.0"
+description = "Car workshop management app"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "flask>=3.1.2",
+    "flask-bcrypt>=1.0.1",
+    "flask-login>=0.6.3",
+    "flask-migrate>=4.1.0",
+    "flask-sqlalchemy>=3.1.1",
+]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+workshop = "workshop.app:main"
