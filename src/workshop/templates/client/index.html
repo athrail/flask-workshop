@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Workshop - Client list{% endblock %}
+{% block heading %}Client list{% endblock %}
+
+{% block actions %}
+  <a class="text-xl bg-blue-800 px-4 py-3 rounded-md font-bold tracking-tight"
+    href="{{ url_for('client_new') }}">Add new client</a>
+{% endblock %}
+
+{% block content %}
+
+<div>
+  <ul>
+  {% for client in clients %}
+    <li><a href="{{ url_for('client_show', id=client.id) }}">{{ client }}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}

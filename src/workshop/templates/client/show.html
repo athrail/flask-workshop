@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Workshop - Client details{% endblock %}
+{% block heading %}Viewing details for {{ " ".join([client.first_name, client.last_name]) }}{% endblock %}
+
+{% block content %}
+<ul>
+  <li><span class="font-bold">First name:</span> {{ client.first_name }}</li>
+  <li><span class="font-bold">Last name:</span> {{ client.last_name }}</li>
+  <li><span class="font-bold">Email:</span> {{ client.email }}</li>
+  <li><span class="font-bold">Phone numberk:</span> {{ client.phone_no }}</li>
+</ul>
+
+{% endblock %}

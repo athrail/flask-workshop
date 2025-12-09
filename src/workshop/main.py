@@ -4,10 +4,13 @@ def create_app():
     from flask_migrate import Migrate
 
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.sqlite'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{app.root_path}/workshop.db'
 
-    db = SQLAlchemy(app)
-    migrate = Migrate(app, db)
+    from workshop.models import Base
+    db = SQLAlchemy(model_class=Base)
+    db.init_app(app)
+    migrate = Migrate()
+    migrate.init_app(app, db)
 
     from workshop.routes import register_routes
     register_routes(app, db)
@@ -16,7 +19,5 @@ def create_app():
 
 def main():
     app = create_app()
-    app.run(debug=True)
+    app.run()
 
-if __name__ == '__main__':
-    main()
