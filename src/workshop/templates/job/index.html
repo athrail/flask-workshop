@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Workshop - Job list{% endblock %}
+{% block heading %}All jobs in database{% endblock %}
+
+{% block content %}
+
+<div>
+  <ul>
+  {% for job in jobs %}
+    <li><a href="{{ url_for('job_show', id=job.id) }}">{{ job.description }}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}

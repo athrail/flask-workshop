@@ -1,5 +1,5 @@
 from typing import Optional, List
-from sqlalchemy import ForeignKey, String, Integer
+from sqlalchemy import Column, ForeignKey, String, Integer, Table
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, relationship
 
 
@@ -31,6 +31,7 @@ class Car(Base):
     maker: Mapped["Maker"] = relationship()
     model_id: Mapped[int] = mapped_column(ForeignKey("models.id"))
     model: Mapped["Model"] = relationship()
+    jobs: Mapped[List["Job"]] = relationship(back_populates="car")
 
     def __repr__(self) -> str:
         return f"Car(plate={self.plate}, owner={self.owner.full_name}, maker={self.maker.name}, model={self.model.name})"
@@ -45,6 +46,24 @@ class Maker(Base):
 
     def __repr__(self) -> str:
         return f"Maker(name={self.name})"
+
+
+job_part_association_table = Table(
+    "job_part",
+    Base.metadata,
+    Column("job_id", ForeignKey("jobs.id")),
+    Column("part_id", ForeignKey("parts.id")),
+)
+
+
+class Job(Base):
+    __tablename__ = "jobs"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    description: Mapped[str] = mapped_column(String())
+    car_id: Mapped[int] = mapped_column(ForeignKey("cars.id"))
+    car: Mapped["Car"] = relationship()
+    parts: Mapped[List["Part"]] = relationship(secondary=job_part_association_table)
 
 
 class Model(Base):
@@ -62,6 +81,7 @@ class Producer(Base):
     __tablename__ = "producers"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(20))
     parts: Mapped[List["Part"]] = relationship(back_populates="producer")
 
 
@@ -69,5 +89,7 @@ class Part(Base):
     __tablename__ = "parts"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30))
+    number: Mapped[str] = mapped_column(String(50))
     producer_id: Mapped[int] = mapped_column(ForeignKey("producers.id"))
     producer: Mapped["Producer"] = relationship(back_populates="parts")

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Workshop - Job details{% endblock %}
+{% block heading %}Viewing details for job: {{ job.id }}{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-y-4">
+    <h2 class="text-4xl">Car details</h2>
+    <ul>
+      <li>
+        <span class="font-bold">License plate:</span>
+        <a class="underline" href="{{ url_for('car_show', id=job.car.id) }}">{{ job.car.plate|upper }}</a>
+      </li>
+      <li><span class="font-bold">Maker:</span> {{ job.car.maker.name }}</li>
+      <li><span class="font-bold">Model:</span> {{ job.car.model.name }}</li>
+      <li><span class="font-bold">Owner:</span> <a class="underline" href="{{ url_for('client_show', id=job.car.owner.id) }}">{{ job.car.owner.full_name }}</a></li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 class="text-4xl mb-4">Job details</h2>
+    <ul>
+      <li>
+        <p class="font-bold">Description:</p> 
+        <p>{{ job.description }}</p>
+      </li>
+  </div>
+
+  <div>
+    <h2 class="text-4xl mb-4">Parts used for the job:</h2>
+    <div class="flex flex-col gap-y-2">
+      {% for part in job.parts %}
+      <p>{{ part.name }} (no. {{ part.number }}) by {{ part.producer.name }}</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

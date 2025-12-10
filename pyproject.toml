@@ -5,13 +5,14 @@ description = "Car workshop management app"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "flask>=3.1.2",
-    "flask-bcrypt>=1.0.1",
-    "flask-login>=0.6.3",
-    "flask-migrate>=4.1.0",
-    "flask-sqlalchemy>=3.1.1",
-    "flask-wtf>=1.2.2",
-    "wtforms>=3.2.1",
+  "faker>=38.2.0",
+  "flask>=3.1.2",
+  "flask-bcrypt>=1.0.1",
+  "flask-login>=0.6.3",
+  "flask-migrate>=4.1.0",
+  "flask-sqlalchemy>=3.1.1",
+  "flask-wtf>=1.2.2",
+  "wtforms>=3.2.1",
 ]
 
 [tool.uv]
@@ -19,3 +20,4 @@ package = true
 
 [project.scripts]
 workshop = "workshop.app:main"
+gen_fake_data_sql = "workshop.main:gen_fake_data"

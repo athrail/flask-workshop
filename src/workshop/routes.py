@@ -1,7 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
-from workshop.models import Client, Maker, Model, Car
+from workshop.models import Client, Job, Maker, Model, Car
 from workshop.forms import NewCarForm, NewClientForm
 
 
@@ -76,3 +76,8 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
             db.session.commit()
             return redirect(url_for("client_show", id=client.id))
         return render_template("car/new.html", form=form, client_id=client.id)
+
+    @app.route("/job/<int:id>")
+    def job_show(id):
+        job = db.get_or_404(Job, id)
+        return render_template("job/show.html", job=job)

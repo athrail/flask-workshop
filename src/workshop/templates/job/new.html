@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Workshop - New car{% endblock %}
+{% block heading %}Adding new car to the client{% endblock %}
+
+{% macro render_field(field, colspan) %}
+<div class="sm:col-span-{{ colspan }}">
+  <label for="{{ field.id}}" class="block text-sm/6 font-medium text-white">{{ field.label }}</label>
+  <div class="mt-2">
+    {{ field(**kwargs)|safe }}
+  </div>
+  {% if field.errors %}
+  <ul class="p-2 mt-2 rounded-md border border-red-400 bg-red-600/15 text-red-400">
+    {% for error in field.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+  {% endif %}
+  </ul>
+</div>
+{% endmacro %}
+
+{% block content %}
+
+<form action="{{ url_for('car_new', id=client_id) }}" method="POST">
+  {{ form.csrf_token }}
+
+  <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+    {% set input_class = "block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" %}
+    {{ render_field(form.plate, colspan=4, class=input_class) }}
+    <input type="hidden" name="owner_id" value="{{ client_id }}" />
+    {{ render_field(form.maker_id, colspan=4, class=input_class) }}
+    {{ render_field(form.model_id, colspan=4, class=input_class) }}
+  </div>
+
+  <div class="mt-6 flex items-center justify-end gap-x-6 border-t border-white/10 pt-10">
+    <button type="button" class="text-sm/6 font-semibold text-white">Cancel</button>
+    <button type="submit" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Save</button>
+  </div>
+</form>
+
+{% endblock %}
