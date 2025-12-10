@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Workshop - Car list{% endblock %}
+{% block heading %}All cars in database{% endblock %}
+
+{% block content %}
+
+<div>
+  <ul>
+  {% for car in cars %}
+    <li><a href="{{ url_for('car_show', id=car.id) }}">{{ car }}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}

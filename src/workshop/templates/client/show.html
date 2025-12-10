@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 
 {% block title %}Workshop - Client details{% endblock %}
-{% block heading %}Viewing details for {{ " ".join([client.first_name, client.last_name]) }}{% endblock %}
+{% block heading %}Viewing details for {{ client.full_name }}{% endblock %}
 
 {% block content %}
-<ul>
-  <li><span class="font-bold">First name:</span> {{ client.first_name }}</li>
-  <li><span class="font-bold">Last name:</span> {{ client.last_name }}</li>
-  <li><span class="font-bold">Email:</span> {{ client.email }}</li>
-  <li><span class="font-bold">Phone numberk:</span> {{ client.phone_no }}</li>
-</ul>
+<div class="flex flex-col gap-4">
+  <ul>
+    <li><span class="font-bold">Full name:</span> {{ client.full_name }}</li>
+    <li><span class="font-bold">Email:</span> {{ client.email }}</li>
+    <li><span class="font-bold">Phone numberk:</span> {{ client.phone_no }}</li>
+  </ul>
+
+  <a class="font-bold text-xl underline" href="{{ url_for('car_new', id=client.id) }}">Add new car to client</a>
+
+  <div class="border-t border-white/30 mt-4 py-4">
+    {% if client.cars %}
+    <h2 class="text-2xl">Clients cars:</h2>
+    <ul>
+      {% for car in client.cars %}
+      <li><a class="underline" href="{{ url_for('car_show', id=car.id) }}">{{ car }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <h2 class="text-2xl">Client has no cars added yet</h2>
+    {% endif %}
+  </div>
+</div>
 
 {% endblock %}
