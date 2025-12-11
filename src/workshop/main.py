@@ -27,11 +27,21 @@ def create_app():
     return app
 
 
-def gen_fake_data():
+def populate_fake_data():
     from flask import Flask
     from flask_migrate import Migrate
     from faker import Faker
-    from workshop.models import Base, Client, Maker, Model, Car, Job, Part, Producer
+    from workshop.models import (
+        Base,
+        Client,
+        Maker,
+        Model,
+        Car,
+        Job,
+        Part,
+        Producer,
+        job_part_association_table,
+    )
     from random import choice
     from sqlalchemy import Table
 
@@ -104,14 +114,15 @@ def gen_fake_data():
         ]
         db.session.add_all(parts)
 
+        db.session.execute(job_part_association_table.delete())
         clear_table_for_model(db, Job)
         jobs = [
             Job(
                 description=fake.sentence(10),
                 car=choice(cars),
-                parts=fake.random_sample(parts),
+                parts=fake.random_sample(parts, length=5),
             )
-            for _ in range(20)
+            for _ in range(10)
         ]
         db.session.add_all(jobs)
 

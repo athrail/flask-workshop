@@ -20,4 +20,4 @@ package = true
 
 [project.scripts]
 workshop = "workshop.app:main"
-gen_fake_data_sql = "workshop.main:gen_fake_data"
+populate_fake_data = "workshop.main:populate_fake_data"
