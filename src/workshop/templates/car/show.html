@@ -4,7 +4,7 @@
 {% block actions %}  
 <form action="{{ url_for('car_delete', id=car.id) }}" method="POST">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-  <input type="submit" value="Delete car" />
+  <input class="text-white font-bold bg-red-700 px-4 py-2 rounded-md" type="submit" value="Delete car" />
 </form>
 {% endblock %}
 {% block heading %}Viewing details for car with license plate: {{ car.plate|upper }}{% endblock %}
