@@ -34,9 +34,14 @@
     <div class="border-t border-white/10 py-4">
       {% if client.cars %}
       <h2 class="text-2xl mb-4">Clients cars:</h2>
-      <div class="flex flex-col gap-2">
+      <div class="grid grid-cols-3 gap-2">
+        <h2 class="border-b border-white/10 font-bold">License plate</h2>
+        <h2 class="border-b border-white/10 font-bold">Maker</h2>
+        <h2 class="border-b border-white/10 font-bold">Model</h2>
         {% for car in client.cars %}
-        <a class="underline" href="{{ url_for('car_show', id=car.id) }}">{{ car.maker.name }} - {{ car.model.name }} ({{ car.plate }})</a>
+        <a class="underline" href="{{ url_for('car_show', id=car.id) }}">{{ car.plate }}</a>
+        <p>{{ car.maker.name }}</p>
+        <p>{{ car.model.name }}</p>
         {% endfor %}
       </div>
       {% else %}
