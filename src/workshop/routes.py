@@ -1,10 +1,12 @@
+from datetime import datetime
 import json
 from functools import reduce
 
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import TIMESTAMP
 
-from workshop.forms import CarForm, ClientForm
+from workshop.forms import CarForm, ClientForm, JobForm
 from workshop.models import Car, Client, Job, Maker, Model
 
 
@@ -129,10 +131,49 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
     def job_show(id):
         job = db.get_or_404(Job, id)
         prices = json.loads(job.part_prices)
-        parts_total = reduce(lambda sum, e: sum + e, prices)
+        parts_total = reduce(lambda sum, e: sum + e, prices, 0)
         return render_template(
             "job/show.html", job=job, prices=prices, parts_total=parts_total
         )
+
+    @app.route("/job/<int:id>/edit", methods=["GET", "POST"])
+    def job_edit(id):
+        job = db.get_or_404(Job, id)
+        form = JobForm(request.form)
+
+        if request.method == "POST" and form.validate():
+            # TODO: more fields
+            job.description = form.description.data or ""
+            job.work_price = float(form.work_price.data or 0)
+            db.session.add(job)
+            db.session.commit()
+            return redirect(url_for("job_show", id=job.id))
+
+        # TODO: add more
+        form.description.data = job.description
+        form.work_price.data = job.work_price
+
+        return render_template("job/new.html", form=form, job=job, car=job.car)
+
+    @app.route("/car/<int:id>/job/new", methods=["GET", "POST"])
+    def job_new(id):
+        car = db.get_or_404(Car, id)
+        form = JobForm(request.form)
+
+        if request.method == "POST" and form.validate():
+            job = Job(
+                car_id=car.id,
+                description=form.description.data,
+                work_price=form.work_price.data,
+                date=datetime.now(),
+                parts=[],
+                part_prices="[]",
+            )
+            db.session.add(job)
+            db.session.commit()
+            return redirect(url_for("job_show", id=job.id))
+
+        return render_template("job/new.html", form=form, car=car)
 
     @app.route("/job/<int:id>", methods=["POST"])
     def job_delete(id):

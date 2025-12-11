@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import (
+    FloatField,
     IntegerField,
     SelectField,
     StringField,
@@ -27,3 +28,12 @@ class CarForm(FlaskForm):
     owner_id = IntegerField("Owner", [validators.DataRequired()])
     maker_id = SelectField("Maker", [validators.DataRequired()], coerce=int)
     model_id = SelectField("Model", [validators.DataRequired()], coerce=int)
+
+
+class JobForm(FlaskForm):
+    description = StringField(
+        "Job description", [validators.length(min=10), validators.DataRequired()]
+    )
+    work_price = FloatField(
+        "Work price", [validators.DataRequired(), validators.NumberRange(min=0)]
+    )
