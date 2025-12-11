@@ -2,12 +2,15 @@
 
 {% block title %}Workshop - New client{% endblock %}
 
-{% set heading = "Adding new client" %}
+{% block heading %}
+
 {% if client %}
-{% set heading = "Editing data for " + client.full_name %}
+  {{ "Editing client - {}".format(client.full_name) }}
+{% else %}
+  {{ "Adding new client" }}
 {% endif %}
 
-{% block heading %}{{ heading }}{% endblock %}
+{% endblock %}
 
 {% macro render_field(field) %}
 <div>
