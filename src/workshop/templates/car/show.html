@@ -1,29 +1,76 @@
 {% extends 'base.html' %}
 
 {% block title %}Workshop - Car details{% endblock %}
-{% block actions %}  
-<form action="{{ url_for('car_delete', id=car.id) }}" method="POST">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-  <input class="text-white font-bold bg-red-700 px-4 py-2 rounded-md" type="submit" value="Delete" />
-</form>
-{% endblock %}
 {% block heading %}Viewing details for car with license plate: {{ car.plate|upper }}{% endblock %}
 
 {% block content %}
-<ul>
-  <li><span class="font-bold">License plate:</span> {{ car.plate|upper }}</li>
-  <li><span class="font-bold">Maker:</span> {{ car.maker.name }}</li>
-  <li><span class="font-bold">Model:</span> {{ car.model.name }}</li>
-  <li><span class="font-bold">Owner:</span> <a class="underline" href="{{ url_for('client_show', id=car.owner.id) }}">{{ car.owner.full_name }}</a></li>
-</ul>
+<div class="flex-1 flex gap-8">
+  <div class="min-w-3xs flex flex-col gap-2 px-4 py-4 bg-gray-800 border-l border-r border-white/10">
+    <h2 class="text-2xl font-bold mb-3">Car details:</h2>
+    <div>
+      <h3 class="font-bold">Maker:</h3>
+      <span>{{ car.maker.name }}</span>
+    </div>
+    <div>
+      <h3 class="font-bold">Model:</h3>
+      <span>{{ car.model.name }}</span>
+    </div>
+    <div>
+      <h3 class="font-bold">Plates numbers:</h3>
+      <span>{{ car.plate }}</span>
+    </div>
 
-<div class="my-5 py-5 border-t border-white/30 flex flex-col gap-y-4">
-  <h2 class="text-4xl">Jobs performed on this car</h2>
+    <h2 class="text-2xl font-bold mb-3">Owner details:</h2>
+    <div>
+      <h3 class="font-bold">Full name:</h3>
+      <span>{{ car.owner.full_name }}</span>
+    </div>
+    <div>
+      <h3 class="font-bold">Email:</h3>
+      <span>{{ car.owner.email }}</span>
+    </div>
+    <div>
+      <h3 class="font-bold">Phone number:</h3>
+      <span>{{ car.owner.phone }}</span>
+    </div>
+  </div>
 
-  <ul>
-    {% for job in car.jobs %}
-    <li><a class="underline" href="{{ url_for('job_show', id=job.id) }}">{{ job.description }}</a></li>
-    {% endfor %}
-  </ul>
+  <div class="flex flex-col gap-4 grow">
+
+    <div class="flex justify-end pt-4 gap-2">
+      <a class="font-bold flex items-center gap-1 bg-green-800 px-4 py-2 rounded-md" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        Add job
+      </a>
+
+      <form action="{{ url_for('car_delete', id=car.id) }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button class="flex gap-1 items-center text-white font-bold bg-red-700 px-4 py-2 rounded-md" type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+          </svg>
+          Delete car
+        </button>
+      </form>
+    </div>
+
+    <div class="border-t border-white/10 py-4">
+      {% if car.jobs %}
+      <h2 class="text-2xl mb-4">Jobs:</h2>
+      <div class="flex flex-col gap-2">
+        {% for job in car.jobs %}
+        <a class="underline" href="{{ url_for('job_show', id=job.id) }}">{{ job.description }}</a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <h2 class="text-2xl">No jobs performed on this car yet</h2>
+      {% endif %}
+    </div>
+
+  </div>
+
 </div>
+
 {% endblock %}

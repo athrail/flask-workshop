@@ -33,6 +33,11 @@
     --color-gray-950: oklch(13% 0.028 261.692);
     --color-white: #fff;
     --spacing: 0.25rem;
+    --container-3xs: 16rem;
+    --container-sm: 24rem;
+    --container-xl: 36rem;
+    --container-2xl: 42rem;
+    --container-6xl: 72rem;
     --container-7xl: 80rem;
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -295,6 +300,24 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
+  .min-w-2xl {
+    min-width: var(--container-2xl);
+  }
+  .min-w-3xs {
+    min-width: var(--container-3xs);
+  }
+  .min-w-6xl {
+    min-width: var(--container-6xl);
+  }
+  .min-w-20 {
+    min-width: calc(var(--spacing) * 20);
+  }
+  .min-w-sm {
+    min-width: var(--container-sm);
+  }
+  .min-w-xl {
+    min-width: var(--container-xl);
+  }
   .flex-1 {
     flex: 1;
   }
@@ -336,6 +359,9 @@
   }
   .justify-start {
     justify-content: flex-start;
+  }
+  .gap-1 {
+    gap: calc(var(--spacing) * 1);
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);

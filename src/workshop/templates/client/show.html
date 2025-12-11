@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="flex-1 flex gap-8">
-  <div class="flex flex-col gap-2 px-4 py-4 bg-gray-800 border-l border-r border-white/10">
+  <div class="min-w-3xs flex flex-col gap-2 px-4 py-4 bg-gray-800 border-l border-r border-white/10">
     <h2 class="text-2xl font-bold mb-3">Client details:</h2>
     <div>
       <h3 class="font-bold">Full name:</h3>
@@ -23,7 +23,7 @@
 
   <div class="flex flex-col gap-4 grow">
     <div class="flex justify-end pt-4">
-      <a class="font-bold text-xl flex items-center gap-2 bg-green-800 px-4 py-2 rounded-md" href="{{ url_for('car_new', id=client.id) }}">
+      <a class="font-bold flex items-center gap-1 bg-green-800 px-4 py-2 rounded-md" href="{{ url_for('car_new', id=client.id) }}">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
