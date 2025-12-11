@@ -8,7 +8,7 @@ from wtforms import (
 )
 
 
-class NewClientForm(FlaskForm):
+class ClientForm(FlaskForm):
     full_name = StringField(
         "Full name", [validators.Length(min=3, max=40), validators.DataRequired()]
     )
@@ -20,7 +20,7 @@ class NewClientForm(FlaskForm):
     )
 
 
-class NewCarForm(FlaskForm):
+class CarForm(FlaskForm):
     plate = StringField(
         "License plate", [validators.Length(min=3, max=15), validators.DataRequired()]
     )

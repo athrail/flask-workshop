@@ -4,8 +4,8 @@ from functools import reduce
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
-from workshop.models import Client, Job, Maker, Model, Car
-from workshop.forms import NewCarForm, NewClientForm
+from workshop.forms import CarForm, ClientForm
+from workshop.models import Car, Client, Job, Maker, Model
 
 
 def register_routes(app: Flask, db: SQLAlchemy) -> None:
@@ -23,14 +23,33 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
         client = db.get_or_404(Client, id)
         return render_template("client/show.html", client=client)
 
+    @app.route("/client/<int:id>/edit", methods=["GET", "POST"])
+    def client_edit(id: int):
+        client = db.get_or_404(Client, id)
+        form = ClientForm(request.form)
+
+        if request.method == "POST":
+            if form.validate():
+                client.email = form.email.data
+                client.full_name = form.full_name.data or ""
+                client.phone = form.phone.data or ""
+                db.session.add(client)
+                db.session.commit()
+                return redirect(url_for("client_show", id=client.id))
+
+        form.email.data = client.email
+        form.full_name.data = client.full_name
+        form.phone.data = client.phone
+        return render_template("client/new.html", client=client, form=form)
+
     @app.route("/client/new", methods=["GET", "POST"])
     def client_new():
-        form = NewClientForm(request.form)
+        form = ClientForm(request.form)
         if request.method == "POST" and form.validate():
             client = Client(
                 full_name=form.full_name.data,
                 email=form.email.data,
-                phone_no=form.phone.data,
+                phone=form.phone.data,
             )
             db.session.add(client)
             db.session.commit()
@@ -48,6 +67,32 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
         car = db.get_or_404(Car, id)
         return render_template("car/show.html", car=car)
 
+    @app.route("/car/<int:id>/edit", methods=["GET", "POST"])
+    def car_edit(id):
+        form = CarForm(request.form)
+        form.maker_id.choices = [
+            (m.id, m.name)
+            for m in db.session.execute(db.select(Maker).order_by(Maker.name)).scalars()
+        ]
+        form.model_id.choices = [
+            (m.id, m.name)
+            for m in db.session.execute(db.select(Model).order_by(Model.name)).scalars()
+        ]
+        car = db.get_or_404(Car, id)
+        if request.method == "POST" and form.validate():
+            car.plate = form.plate.data or ""
+            car.maker_id = form.maker_id.data
+            car.model_id = form.model_id.data
+            db.session.add(car)
+            db.session.commit()
+            return redirect(url_for("car_show", id=car.id))
+
+        form.plate.data = car.plate
+        form.maker_id.data = car.maker_id
+        form.model_id.data = car.model_id
+
+        return render_template("car/new.html", form=form, car=car, client=car.owner)
+
     @app.route("/car/<int:id>", methods=["POST"])
     def car_delete(id):
         car = db.get_or_404(Car, id)
@@ -58,7 +103,7 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
 
     @app.route("/client/<int:id>/car/new", methods=["GET", "POST"])
     def car_new(id):
-        form = NewCarForm(request.form)
+        form = CarForm(request.form)
         form.maker_id.choices = [
             (m.id, m.name)
             for m in db.session.execute(db.select(Maker).order_by(Maker.name)).scalars()
@@ -78,7 +123,7 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
             db.session.add(car)
             db.session.commit()
             return redirect(url_for("client_show", id=client.id))
-        return render_template("car/new.html", form=form, client_id=client.id)
+        return render_template("car/new.html", form=form, client=client)
 
     @app.route("/job/<int:id>")
     def job_show(id):

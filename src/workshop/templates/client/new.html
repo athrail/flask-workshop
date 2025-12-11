@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}Workshop - New client{% endblock %}
-{% block heading %}Adding new client{% endblock %}
 
-{% macro render_field(field, colspan) %}
-<div class="sm:col-span-{{ colspan }}">
-  <label for="{{ field.id}}" class="block text-sm/6 font-medium text-white">{{ field.label }}</label>
+{% set heading = "Adding new client" %}
+{% if client %}
+{% set heading = "Editing data for " + client.full_name %}
+{% endif %}
+
+{% block heading %}{{ heading }}{% endblock %}
+
+{% macro render_field(field) %}
+<div>
+  <label for="{{ field.id }}" class="block text-sm/6 font-medium text-white">{{ field.label }}</label>
   <div class="mt-2">
     {{ field(**kwargs)|safe }}
   </div>
@@ -21,14 +27,14 @@
 
 {% block content %}
 
-<form action="{{ url_for('client_new') }}" method="POST">
+<form method="POST">
   {{ form.csrf_token }}
 
-  <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+  <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8">
     {% set input_class = "block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" %}
-    {{ render_field(form.full_name, colspan=4, autocomplete="full_name", class=input_class) }}
-    {{ render_field(form.email, colspan=4, autocomplete="email", class=input_class) }}
-    {{ render_field(form.phone, colspan=4, autocomplete="phone", class=input_class, pattern="[0-9]{9}") }}
+    {{ render_field(form.full_name, autocomplete="full_name", class=input_class) }}
+    {{ render_field(form.email, autocomplete="email", class=input_class) }}
+    {{ render_field(form.phone, autocomplete="phone", class=input_class, pattern="[0-9]{9}") }}
   </div>
 
   <div class="mt-6 flex items-center justify-end gap-x-6 border-t border-white/10 pt-10">

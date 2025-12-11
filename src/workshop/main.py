@@ -68,7 +68,9 @@ def populate_fake_data():
 
         clear_table_for_model(db, Client)
         clients = [
-            Client(full_name=fake.name(), email=fake.email(), phone=fake.phone_number())
+            Client(
+                full_name=fake.name(), email=fake.email(), phone=fake.random_number(9)
+            )
             for _ in range(3)
         ]
         db.session.add_all(clients)
