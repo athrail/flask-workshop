@@ -59,9 +59,12 @@
     <div class="border-t border-white/10 py-4">
       {% if car.jobs %}
       <h2 class="text-2xl mb-4">Jobs:</h2>
-      <div class="flex flex-col gap-2">
+      <div class="grid grid-cols-4 gap-2">
+        <h2 class="font-bold border-b border-white/10">Date</h2>
+        <h2 class="font-bold border-b border-white/10 col-span-3">Description</h2>
         {% for job in car.jobs %}
-        <a class="underline" href="{{ url_for('job_show', id=job.id) }}">{{ job.description }}</a>
+        <p>{{ job.date.strftime("%d-%m-%Y %H:%M") }}</p>
+        <a class="underline grow col-span-3" href="{{ url_for('job_show', id=job.id) }}">{{ job.description }}</a>
         {% endfor %}
       </div>
       {% else %}
