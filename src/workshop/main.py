@@ -16,7 +16,6 @@ def create_app():
 
     db = SQLAlchemy(model_class=Base)
     db.init_app(app)
-    db.create_all()
     migrate = Migrate()
     migrate.init_app(app, db)
     csrf = CSRFProtect()
