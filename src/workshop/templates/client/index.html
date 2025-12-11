@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<div>
+<div class="flex-1 py-4">
   <ul>
   {% for client in clients %}
     <li><a href="{{ url_for('client_show', id=client.id) }}">{{ client }}</a></li>

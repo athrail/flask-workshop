@@ -8,7 +8,7 @@
     <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet" />
   </head>
   <body class="h-full">
-    <div class="min-h-full">
+    <div class="min-h-full flex flex-col">
       <nav class="bg-gray-800/50">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="flex h-16 items-center">
@@ -35,17 +35,23 @@
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 class="text-3xl font-bold tracking-tight text-white">{% block heading %}Dashboard{% endblock %}</h1>
           <div class="text-white">
-          {% block actions %}{% endblock %}
+            {% block actions %}{% endblock %}
           </div>
         </div>
       </header>
 
-      <main>
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-white">
+      <main class="flex-1 overflow-y-auto flex flex-col justify-start">
+        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 text-white flex flex-col flex-1">
           <!-- Your content -->
           {% block content %}{% endblock %}
         </div>
       </main>
-      </div>
+
+      <footer class="bg-gray-800/50 border-white/10 border-t">
+        <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 text-white flex justify-center">
+          <p class="text-xl text-white">Copyright (c) 2025 Krzysztof Lewandowski. All Rights Reserved.</p>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
