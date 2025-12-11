@@ -1,3 +1,6 @@
+import json
+from functools import reduce
+
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -80,7 +83,11 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
     @app.route("/job/<int:id>")
     def job_show(id):
         job = db.get_or_404(Job, id)
-        return render_template("job/show.html", job=job)
+        prices = json.loads(job.part_prices)
+        parts_total = reduce(lambda sum, e: sum + e, prices)
+        return render_template(
+            "job/show.html", job=job, prices=prices, parts_total=parts_total
+        )
 
     @app.route("/job/<int:id>", methods=["POST"])
     def job_delete(id):

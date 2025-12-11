@@ -1,6 +1,15 @@
 import datetime
 from typing import Optional, List
-from sqlalchemy import TIMESTAMP, Column, ForeignKey, String, Integer, Table, DateTime
+from sqlalchemy import (
+    TIMESTAMP,
+    Column,
+    Float,
+    ForeignKey,
+    String,
+    Integer,
+    Table,
+    DateTime,
+)
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, relationship
 
 
@@ -74,6 +83,8 @@ class Job(Base):
         "Part", secondary=job_part_association_table
     )
     date: Mapped[datetime.datetime] = mapped_column(DateTime, default=TIMESTAMP)
+    part_prices: Mapped[str] = mapped_column(String())
+    work_price: Mapped[float] = mapped_column(Float())
 
 
 class Model(Base):

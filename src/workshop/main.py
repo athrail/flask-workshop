@@ -29,6 +29,7 @@ def create_app():
 
 
 def populate_fake_data():
+    import json
     from flask import Flask
     from flask_migrate import Migrate
     from faker import Faker
@@ -43,7 +44,7 @@ def populate_fake_data():
         Producer,
         job_part_association_table,
     )
-    from random import choice
+    from random import choice, random
     from sqlalchemy import Table
 
     app = Flask(__name__)
@@ -123,6 +124,8 @@ def populate_fake_data():
                 car=choice(cars),
                 parts=fake.random_sample(parts, length=5),
                 date=datetime.datetime.now(),
+                work_price=random() * int(fake.random_number(4)),
+                part_prices=json.dumps([random() * 600.0 for _ in range(len(parts))]),
             )
             for _ in range(10)
         ]
