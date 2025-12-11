@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-4 grow">
+  <div class="flex flex-col gap-8 grow">
 
     <div class="flex justify-end pt-4 gap-2">
       <form action="{{ url_for('job_delete', id=job.id) }}" method="POST">
@@ -59,21 +59,38 @@
 
     <div>
       {% if job.parts %}
-      <h2 class="text-2xl mb-4">Parts used for the job:</h2>
-      <div class="grid grid-cols-3 gap-1">
+      <h2 class="text-2xl font-bold mb-4">Parts used for the job:</h2>
+      <div class="grid grid-cols-4 gap-1">
         <h2 class="border-b border-white/10 font-bold">Name</h2>
         <h2 class="border-b border-white/10 font-bold">Number</h2>
         <h2 class="border-b border-white/10 font-bold">Producer</h2>
+        <h2 class="border-b border-white/10 font-bold">Price</h2>
 
       {% for part in job.parts %}
         <p>{{ part.name }}</p>
         <p>{{ part.number }}</p>
         <p>{{ part.producer.name }}</p>
+        <p>PLN {{ prices[loop.index0]|round(2) }}
       {% endfor %}
       </div>
       {% else %}
-      <h2 class="text-2xl">No parts used for this job</h2>
+      <h2 class="text-2xl font-bold">No parts used for this job</h2>
       {% endif %}
+    </div>
+
+    <div class="grid grid-cols-2 mb-10">
+      {% set total_cost = job.work_price %}
+      <h2 class="text-2xl font-bold">Work price:</h2>
+      <p>PLN {{ job.work_price|round(2) }}</p>
+
+      {% if job.parts %}
+      <h2 class="text-2xl font-bold">Parts total:</h2>
+      <p>PLN {{ parts_total|round(2) }}</p>
+      {% set total_cost = total_cost + parts_total %}
+      {% endif %}
+
+      <h2 class="text-2xl font-bold">Total cost:</h2>
+      <p>PLN {{ total_cost|round(2) }}</p>
     </div>
 
   </div>
