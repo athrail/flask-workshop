@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block title %}Workshop - Job details{% endblock %}
+
+{% block actions %}
+<form action="{{ url_for('job_delete', id=job.id) }}" method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input class="text-white font-bold bg-red-700 px-4 py-2 rounded-md" type="submit" value="Delete" />
+</form>
+{% endblock %}
+
 {% block heading %}Viewing details for job: {{ job.id }}{% endblock %}
 
 {% block content %}

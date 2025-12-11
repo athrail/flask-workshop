@@ -81,3 +81,11 @@ def register_routes(app: Flask, db: SQLAlchemy) -> None:
     def job_show(id):
         job = db.get_or_404(Job, id)
         return render_template("job/show.html", job=job)
+
+    @app.route("/job/<int:id>", methods=["POST"])
+    def job_delete(id):
+        job = db.get_or_404(Job, id)
+        car_id = job.car_id
+        db.session.delete(job)
+        db.session.commit()
+        return redirect(url_for("car_show", id=car_id))
