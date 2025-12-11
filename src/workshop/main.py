@@ -1,3 +1,4 @@
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -121,6 +122,7 @@ def populate_fake_data():
                 description=fake.sentence(10),
                 car=choice(cars),
                 parts=fake.random_sample(parts, length=5),
+                date=datetime.datetime.now(),
             )
             for _ in range(10)
         ]
